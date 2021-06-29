@@ -1,0 +1,324 @@
+<div class="page-inner">
+  <div class="page-header">
+    <h4 class="page-title">LÝ LỊCH KHOA HỌC</h4>
+    <ul class="breadcrumbs">
+      <li class="nav-home">
+        <a href="#">
+          <i class="flaticon-home"></i>
+        </a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">Thông tin</a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">Lý lịch khoa học</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">LÝ LỊCH KHOA HỌC</div>
+        </div>
+        <div class="card-body">
+          <div class="card-sub">
+            A. THÔNG TIN CÁ NHÂN
+          </div>
+          <table>
+            <tbody>
+              <tr >
+                <td style="width:25%" rowspan="7"><img src="../../../../{{ giangvien.hinhAnh }}" alt="avata" style="width:100%;"></td>
+                <td colspan="2"><b>1. Họ và tên:</b> {{giangvien.tenGV}}</td>
+              </tr>
+              <tr>
+                <td><b>2. Năm sinh:</b> {{giangvien.ngaySinh | date: "yyyy"}}</td>
+                <td><b>3. Nam/ Nữ:</b> {{giangvien.gioiTinh}}</td>
+              </tr>
+              <tr>
+                <td colspan="2"><b>4. Nơi sinh:</b> {{giangvien.noiSinh}}</td>
+              </tr>
+              <tr>
+                <td colspan="2"><b>5. Địa chỉ hiện nay:</b> {{giangvien.diaChi}}</td>
+              </tr>
+              <tr>
+                <td colspan="2"><b>6. Học vị :</b> </td>
+              </tr>
+              <tr>
+                <td>Năm bảo vệ: </td>
+                <td>Nơi bảo vệ: </td>
+              </tr>
+              <tr>
+                <td>Ngành:</td>
+                <td>Chuyên nghành:</td>
+              </tr>
+              <tr>
+                <td colspan="3"><b>7. Chức danh khoa học:</b> </td>
+              </tr>
+              <tr>
+                <td>7.1. Phó giáo sư</td>
+                <td>Năm phong:</td>
+                <td>Nơi phong:</td>
+              </tr>
+              <tr>
+                <td>7.2. Giáo sư</td>
+                <td>Năm phong:</td>
+                <td>Nơi phong:</td>
+              </tr>
+              <tr>
+                <td colspan="2"><b>8. Chức danh nghiên cứu:</b> {{giangvien.chucDanh}}</td>
+                <td><b>9. Chức vụ:</b> {{giangvien.chucVu}}</td>
+              </tr>
+              <tr>
+                <td colspan="3"><b>10. Cơ quan công tác: </b> </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="card-sub">
+            B. TRÌNH ĐỘ HỌC VẤN
+          </div>
+          <p>11. Quá trình đào tạo</p>
+          <table>
+            <tbody>
+              <tr>
+                <th style="width: 80px; text-align: center;">Bậc đào tạo</th>
+                <th style="width: 15%; text-align: center;">Nơi đào tạo</th>
+                <th style="width: 100px; text-align: center;">Chuyên môn</th>
+                <th style="width: 20%; text-align: center;">Năm tốt nghiệp</th>
+              </tr>
+              <tr *ngFor= "let item of daotao">
+                <td>{{ item.bacDT }}</td>
+                <td>{{ item.noiDT }}</td>
+                <td>{{ item.chuyenMon }}</td>
+                <td>{{ item.namTotNghiep }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>12. Các khóa đào tạo khác</p>
+          <!-- <p-table selectionMode="single" [value]="khoadaotao" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+               <tr>
+                  <th style="width: 80px; text-align: center;">Văn bằng</th>
+                  <th style="width: 15%; text-align: center;">Tên khóa đào tạo</th>
+                  <th style="width: 100px; text-align: center;">Nơi đào tạo</th>
+                  <th style="width: 20%; text-align: center;">Thời gian đào tạo</th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item  let-i="rowIndex">
+               <tr>
+                  <td>{{ item.bacDT }}</td>
+                  <td>{{ item.noiDT }}</td>
+                  <td>{{ item.chuyenMon }}</td>
+                  <td>{{ item.thoiGian }}</td>
+               </tr>
+            </ng-template>
+          </p-table> -->
+          <p>13. Trình độ ngoại ngữ/tin học</p>
+          <p>13.1 Ngoại ngữ</p>
+          <table>
+            <tbody>
+              <tr>
+                <th style="width: 50px; text-align: center;">STT</th>
+                <th style=" text-align: center;">Ngoại ngữ</th>
+                <th style=" text-align: center;">Trình độ</th>
+                <th style="width: 100px; text-align: center;">Thời gian</th>
+              </tr>
+              <tr *ngFor ="let item of ngoaingu; let i = index;">
+                <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                <td>{{ item.tenNN }}</td>
+                <td>{{ item.vanBang }}</td>
+                <td>{{ item.thoiGian }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <b>13.2 Tin học: {{giangvien.tinHoc}}</b>
+          <div class="card-sub">
+            C. KINH NGHIỆM LÀM VIỆC VÀ THÀNH TÍCH KHOA HỌC & CÔNG NGHỆ
+          </div>
+          <p>14. Quá trình công tác</p>
+          <table>
+            <tbody>
+               <tr>
+                  <th style="width: 80px; text-align: center;">Thời gian</th>
+                  <th style="width: 15%; text-align: center;">Vị trí công tác</th>
+                  <th style="width: 100px; text-align: center;">Cơ quan công tác</th>
+                  <th style="width: 20%; text-align: center;">Địa chỉ cơ quan</th>
+               </tr>
+              <tr *ngFor= "let item of congtac">
+                  <td>Từ: {{item.thoiGianBD|date:"yyyy"}} đến: {{ item.thoiGianKT |date:"yyyy" }}</td>
+                  <td>{{ item.viTri }}</td>
+                  <td>{{ item.coQuan }}</td>
+                  <td>{{ item.diaChi }}</td>
+               </tr>
+            </tbody>
+          </table>
+          <p>15. Các sách chuyên khảo, giáo trình</p>
+          <p>15.1 Sách giáo trình</p>
+          <!-- <p-table selectionMode="single" [value]="ngoaingu" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+               <tr>
+                  <th style="width: 50px; text-align: center;">STT</th>
+                  <th style="width: 80px; text-align: center;">Ngoại ngữ</th>
+                  <th style="width: 15%; text-align: center;">Trình độ</th>
+                  <th style="width: 100px; text-align: center;">Chứng chỉ</th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item  let-i="rowIndex">
+               <tr>
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.noiDT }}</td>
+                  <td>{{ item.chuyenMon }}</td>
+                  <td>{{ item.thoiGian }}</td>
+               </tr>
+            </ng-template>
+          </p-table> -->
+          <p>15.2 Sách chuyên khảo/khác </p>
+          <!-- <p-table selectionMode="single" [value]="ngoaingu" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+               <tr>
+                  <th style="width: 50px; text-align: center;">STT</th>
+                  <th style="width: 80px; text-align: center;">Ngoại ngữ</th>
+                  <th style="width: 15%; text-align: center;">Trình độ</th>
+                  <th style="width: 100px; text-align: center;">Chứng chỉ</th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item  let-i="rowIndex">
+               <tr>
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.noiDT }}</td>
+                  <td>{{ item.chuyenMon }}</td>
+                  <td>{{ item.thoiGian }}</td>
+               </tr>
+            </ng-template>
+          </p-table> -->
+          <!-- <p>16. Các bài báo khoa học</p>
+          <p>16.1 Tạp chí trong nước</p>
+          <p-table selectionMode="single" [value]="ngoaingu" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+               <tr>
+                  <th style="width: 50px; text-align: center;">STT</th>
+                  <th style="width: 80px; text-align: center;">Ngoại ngữ</th>
+                  <th style="width: 15%; text-align: center;">Trình độ</th>
+                  <th style="width: 100px; text-align: center;">Chứng chỉ</th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item  let-i="rowIndex">
+               <tr>
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.noiDT }}</td>
+                  <td>{{ item.chuyenMon }}</td>
+                  <td>{{ item.thoiGian }}</td>
+               </tr>
+            </ng-template>
+          </p-table> -->
+          <!-- <p>16.2 Tạp chí quốc tế </p>
+          <p-table selectionMode="single" [value]="ngoaingu" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+               <tr>
+                  <th style="width: 50px; text-align: center;">STT</th>
+                  <th style="width: 80px; text-align: center;">Ngoại ngữ</th>
+                  <th style="width: 15%; text-align: center;">Trình độ</th>
+                  <th style="width: 100px; text-align: center;">Chứng chỉ</th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item  let-i="rowIndex">
+               <tr>
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.noiDT }}</td>
+                  <td>{{ item.chuyenMon }}</td>
+                  <td>{{ item.thoiGian }}</td>
+               </tr>
+            </ng-template>
+          </p-table> -->
+          <!-- <p>16.2 Hội nghị quốc tế </p>
+          <p-table selectionMode="single" [value]="ngoaingu" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+               <tr>
+                  <th style="width: 50px; text-align: center;">STT</th>
+                  <th style="width: 80px; text-align: center;">Ngoại ngữ</th>
+                  <th style="width: 15%; text-align: center;">Trình độ</th>
+                  <th style="width: 100px; text-align: center;">Chứng chỉ</th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item  let-i="rowIndex">
+               <tr>
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.noiDT }}</td>
+                  <td>{{ item.chuyenMon }}</td>
+                  <td>{{ item.thoiGian }}</td>
+               </tr>
+            </ng-template>
+          </p-table> -->
+          <!-- <p>16.3 Hội nghị trong nước </p>
+          <p-table selectionMode="single" [value]="ngoaingu" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+               <tr>
+                  <th style="width: 50px; text-align: center;">STT</th>
+                  <th style="width: 80px; text-align: center;">Ngoại ngữ</th>
+                  <th style="width: 15%; text-align: center;">Trình độ</th>
+                  <th style="width: 100px; text-align: center;">Chứng chỉ</th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item  let-i="rowIndex">
+               <tr>
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.noiDT }}</td>
+                  <td>{{ item.chuyenMon }}</td>
+                  <td>{{ item.thoiGian }}</td>
+               </tr>
+            </ng-template>
+          </p-table> -->
+          <p>17. Các đề tài, dự án KH&CN </p>
+          <p>17.1 Chủ trì đề tài, dự án KH&CN</p>
+          <table>
+            <tbody>
+               <tr>
+                  <th style="width: 50px; text-align: center;">TT</th>
+                  <th style=" text-align: center;">Tên đề tài</th>
+                  <th style=" width: 80px; text-align: center;">Mã số đề tài</th>
+                  <th style=" text-align: center;">Cấp quản lý</th>
+                  <th style=" text-align: center;">Thời gian<br>(Bắt đầu - Kết thúc) </th>
+                  <th style=" text-align: center;">Tình trạng</th>
+               </tr>
+              <tr *ngFor= "let item of detai_chutri; let i = index; ">
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.tenDT }}</td>
+                  <td>{{ item.maSo }}</td>
+                  <td>{{ item.capQuanLy }}</td>
+                  <td>{{item.thoiGianBD|date:"yyyy"}} - {{ item.thoiGianKT |date:"yyyy" }}</td>
+                  <td>{{ item.thanhTich }}</td>
+               </tr>
+            </tbody>
+          </table>
+          <p>17.2 Thành viên đề tài, dự án KH&CN</p>
+          <table>
+            <tbody>
+               <tr>
+                  <th style="width: 50px; text-align: center;">TT</th>
+                  <th style=" text-align: center;">Tên đề tài</th>
+                  <th style=" width: 80px; text-align: center;">Mã số đề tài</th>
+                  <th style=" text-align: center;">Cấp quản lý</th>
+                  <th style=" text-align: center;">Thời gian<br>(Bắt đầu - Kết thúc) </th>
+                  <th style=" text-align: center;">Tình trạng</th>
+               </tr>
+              <tr *ngFor= "let item of detai_thanhvien; let i = index; ">
+                  <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                  <td>{{ item.tenDT }}</td>
+                  <td>{{ item.maSo }}</td>
+                  <td>{{ item.capQuanLy }}</td>
+                  <td>{{item.thoiGianBD|date:"yyyy"}} - {{ item.thoiGianKT |date:"yyyy" }}</td>
+                  <td>{{ item.thanhTich }}</td>
+               </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

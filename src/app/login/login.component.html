@@ -1,0 +1,41 @@
+  <div class="table-view">
+    <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-6 text-center login-section  no-padding">
+              <div class="mg-b-20 mg-t-20">
+                <img style="width: 80px;" src="../../assets/img/utehy.png">
+              </div>
+              <h4 class="text-center mg-b-25"><strong>HỆ THỐNG QUẢN LÝ DỮ LIỆU KHOA HỌC</strong></h4>
+              <div class="form-section">
+                <form [formGroup]='loginForm' (ngSubmit)="onSubmit()">
+                  <h4 class="text-center mg-b-20"><strong>Đăng Nhập</strong></h4>
+                  <div class="form-group" id="home-logon">
+                    <i class="fa fa-user"></i>
+                    <input type="text" placeholder="Tên Đăng Nhập" formControlName="username" class="form-control">
+                    <span class="help-block small" style="color: red;" *ngIf="submitted &&f.username.errors.required">Chưa nhập tài khoản!</span>
+                  </div>
+                  <div class="form-group no-margin">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="Password" placeholder="******" formControlName="password" class="form-control">
+                    <!-- <span class="help-block small">Mật khẩu của bạn</span> -->
+                    <span class="help-block small" style="color: red;" *ngIf="submitted &&f.password.errors.required">Chưa nhập mật khẩu!</span>
+
+                  </div>
+                  <div class="checkbox text-right">
+                    <label style="padding-left: 25px;" class="custom-checkbox p-r-0">Hiển thị mật khẩu
+                      <input type="checkbox" onclick="showPassword()"><span class="checkmark"></span>
+                    </label><span>|</span>
+                    <a href="#">Quên mật khẩu</a>
+                  </div>
+                  <p class="error-message mg-b-5" id="idErrorMessage">
+                    <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+                  </p>
+                  <div class="mg-b-20">
+                    <button class="btn btn-warning btn-full btn-ground" onclick="return checkCookiesBrowser();">Đăng Nhập</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>

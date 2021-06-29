@@ -1,0 +1,188 @@
+<div class="page-inner">
+  <div class="page-header">
+     <h4 class="page-title">Quản Lý Khoa</h4>
+     <ul class="breadcrumbs">
+        <li class="nav-home">
+           <a href="#">
+           <i class="flaticon-home"></i>
+           </a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Khoa</a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Danh Sách Khoa</a>
+        </li>
+     </ul>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+        <div class="card">
+           <div class="card-header">
+              <div class="card-title">
+                 Danh Sách Khoa
+                 <div class="them">
+                    <button class="btn btn-success" (click)="createModal()">
+                    <span class="btn-label">
+                    <i class="fa fa-plus"></i>
+                    </span> Thêm Mới
+                    </button>
+                 </div>
+              </div>
+           </div>
+           <div class="card-body ">
+             <form class="form-horizontal" role="form" [formGroup]="formsearch"  (ngSubmit)="search()">
+               <div class="row">
+                 <div class="col-lg-2">
+                  <div class="form-group form-group-default">
+                    <label>Số Dòng</label>
+                    <select class="form-control" #myselect (change)="updateValue(myselect.value)">
+                      <option value="3" >3</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                    </select>
+                  </div>
+                 </div>
+                 <div class="col-md-6 ml-auto">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input formControlName="ten" type="text" class="form-control" placeholder="Tìm kiếm " aria-label="" aria-describedby="basic-addon1">
+                      <div class="input-group-prepend">
+                        <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+               </div>
+              </form>
+              <p-table selectionMode="single" [value]="khoas" styleClass="p-datatable-gridlines">
+                 <ng-template pTemplate="header">
+                    <tr>
+                       <th style="width: 70px; text-align: center;">STT</th>
+                       <th style="width: 100px;text-align: center;">Mã Khoa</th>
+                       <th style="text-align: center;">Tên Khoa</th>
+                       <th style="width:180px; text-align: center;">Tác vụ</th>
+                    </tr>
+                 </ng-template>
+                 <ng-template pTemplate="body" let-item  let-i="rowIndex">
+                    <tr>
+                        <td style="text-align: center;">{{ i + 1 }}</td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.tenKhoa }}</td>
+                        <td  style="text-align: center;">
+                          <button (click)="chitiet(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-success" data-original-title="Xem Thông Tin">
+                            <i class="fa fa-eye"></i>
+                          </button>
+                          <button (click)="openUpdateModal(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-warning" data-original-title="Chỉnh sửa">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <button (click)="onDelete(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-danger" data-original-title="Xóa">
+                            <i class="fa fa-times"></i>
+                          </button>
+                        </td>
+                    </tr>
+                 </ng-template>
+              </p-table>
+           </div>
+           <div class="card-body">
+              <div class="demo" >
+                 <ul class="pagination pg-primary phantrang">
+                    <ngb-pagination
+                    [collectionSize]="totalRecords"
+                    [pageSize]="pageSize"
+                    [(page)]="page" [maxSize]="10"
+                    [rotate]="true"
+                    (pageChange)="loadPage($event)">
+                    </ngb-pagination>
+                 </ul>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- Modal -->
+<div *ngIf="showUpdateModal" id="createModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4  *ngIf="isCreate" class="modal-title">THÊM KHOA</h4>
+          <h4 *ngIf="!isCreate" class="modal-title">SỬA KHOA</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Tên khoa (
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="text" class=" form-control" placeholder="Nhập tên khoa" formControlName="tenKhoa"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.tenKhoa.errors">
+                  <i style="color: red;" *ngIf="f.tenKhoa.errors.required">Hãy nhập tên khoa</i>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="Reset()"> Làm mới</button>
+          <button type="submit" class="btn btn-success">Lưu lại</button>
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+        </form>
+     </div>
+  </div>
+</div>
+<!-- Modal chi tiết -->
+<div *ngIf="showCTModal" id="viewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">THÔNG TIN DANH SÁCH BỘ MÔN</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-md-12" >
+              <p></p>
+              <h4>* Tên khoa: <b>{{khoa.tenKhoa}} </b></h4><br/>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Mã </th>
+                    <th scope="col">Tên Bộ Môn</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of bomon let i = index" >
+                    <td>{{i+1}}</td>
+                    <td>{{x.id}}</td>
+                    <td>{{x.tenBM}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+     </div>
+  </div>
+</div>
+
+

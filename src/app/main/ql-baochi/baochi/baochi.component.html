@@ -1,0 +1,209 @@
+<div class="page-inner">
+  <div class="page-header">
+     <h4 class="page-title">Quản Lý Báo Chí</h4>
+     <ul class="breadcrumbs">
+        <li class="nav-home">
+           <a href="#">
+           <i class="flaticon-home"></i>
+           </a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Báo Chí</a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Danh Sách Báo Chí</a>
+        </li>
+     </ul>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+        <div class="card">
+           <div class="card-header">
+              <div class="card-title">
+                 Danh Sách Báo Chí
+                 <div class="them">
+                    <button class="btn btn-success" (click)="createModal()">
+                    <span class="btn-label">
+                    <i class="fa fa-plus"></i>
+                    </span> Thêm Mới
+                    </button>
+                 </div>
+              </div>
+           </div>
+           <div class="card-body ">
+             <form class="form-horizontal" role="form" [formGroup]="formsearch"  (ngSubmit)="search()">
+               <div class="row">
+                 <div class="col-lg-2">
+                  <div class="form-group form-group-default">
+                    <label>Số Dòng</label>
+                    <select class="form-control" #myselect (change)="updateValue(myselect.value)">
+                      <option value="5" >5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                    </select>
+                  </div>
+                 </div>
+                 <div class="col-md-6 ml-auto">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input formControlName="ten" type="text" class="form-control" placeholder="Tìm kiếm " aria-label="" aria-describedby="basic-addon1">
+                      <div class="input-group-prepend">
+                        <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+               </div>
+              </form>
+              <p-table selectionMode="single" [value]="baochis" styleClass="p-datatable-gridlines">
+                 <ng-template pTemplate="header">
+                    <tr>
+                       <th style="width: 60px; text-align: center;">STT</th>
+                       <th style="width: 30%; text-align: center;">Tên Bài Báo</th>
+                       <th style="width: 60px; text-align: center;">TrangBĐ</th>
+                       <th style="width: 60px; text-align: center;">TrangKT</th>
+                       <th style="width: 10%; text-align: center;">Tạp Chí</th>
+                       <th style="width: 10%; text-align: center;">Thực Hiện</th>
+                       <th style="width: 100px; text-align: center;">Tác vụ</th>
+                    </tr>
+                 </ng-template>
+                 <ng-template pTemplate="body" let-item  let-i="rowIndex">
+                    <tr>
+                       <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                       <td>{{ item.ten_BBao }}</td>
+                       <td>{{ item.trang_BD }}</td>
+                       <td>{{ item.trang_KT }}</td>
+                       <td>{{ item.ten_TapChi }}</td>
+                       <td>{{ item.hoTen }}</td>
+                       <td>
+                          <button (click)="openUpdateModal(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-warning" data-original-title="Chỉnh sửa">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <button (click)="onDelete(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-danger" data-original-title="Xóa">
+                            <i class="fa fa-times"></i>
+                          </button>
+                      </td>
+                    </tr>
+                 </ng-template>
+              </p-table>
+           </div>
+           <div class="card-body">
+              <div class="demo" >
+                 <ul class="pagination pg-primary phantrang">
+                    <ngb-pagination
+                    [collectionSize]="totalRecords"
+                    [pageSize]="pageSize"
+                    [(page)]="page" [maxSize]="10"
+                    [rotate]="true"
+                    (pageChange)="loadPage($event)">
+                    </ngb-pagination>
+                 </ul>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- Modal -->
+<div *ngIf="showUpdateModal" id="createModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4  *ngIf="isCreate" class="modal-title">THÊM BÁO CHÍ</h4>
+          <h4 *ngIf="!isCreate" class="modal-title">SỬA BÁO CHÍ</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Tên Bài Báo (
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="text" class=" form-control" placeholder="Tên Bài Báo" formControlName="ten_BBao"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.ten_BBao.errors">
+                  <i style="color: red;" *ngIf="f.ten_BBao.errors.required">Hãy nhập tên bài báo</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Tạp chí (
+                  <span style="color: red;">*</span>)
+                </label>
+                <select formControlName="iD_TapChi"  class="form-control form-control" id="defaultSelect">
+                  <option value="">---Chọn tạp chí---</option>
+                  <option *ngFor="let x of tapchi" [value]="x.iD_TapChi">{{x.ten_TapChi}}</option>
+                </select>
+                <small class="form-text text-muted" *ngIf="submitted && f.iD_TapChi.errors">
+                  <i style="color: red;" *ngIf="f.iD_TapChi.errors.required">Hãy chọn tạp chí</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Thời Gian Xuất Bản (<span style="color: red;">*</span>)</label><br>
+                <p-calendar formControlName="tG_XB" [dateFormat]="dateFormat"  [locale]="locale_vn" [showIcon]="true" inputId="icon"></p-calendar>
+                <small class="form-text text-muted" *ngIf="submitted && f.tG_XB.errors">
+                  <i style="color: red;" *ngIf="f.tG_XB.errors.required">Hãy nhập thời gian</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Trang bắt đầu (
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="number" class=" form-control" placeholder="Trang bắt đầu" formControlName="trang_BD"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.trang_BD.errors">
+                  <i style="color: red;" *ngIf="f.trang_BD.errors.required">Hãy nhập thông tin trang bắt đầu</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Trang kết thúc (
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="number" class=" form-control" placeholder="Trang kết thúc" formControlName="trang_KT"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.trang_KT.errors">
+                  <i style="color: red;" *ngIf="f.trang_KT.errors.required">Hãy nhập thông tin trang kết thúc</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Giảng Viên Thực Hiện (
+                  <span style="color: red;">*</span>)
+                </label>
+                <select formControlName="iD_GV"  class="form-control form-control" id="defaultSelect">
+                  <option value="">---Chọn giảng viên thực hiện---</option>
+                  <option *ngFor="let x of giangvien" [value]="x.iD_GV">{{x.hoTen}}</option>
+                </select>
+                <small class="form-text text-muted" *ngIf="submitted && f.iD_GV.errors">
+                  <i style="color: red;" *ngIf="f.iD_GV.errors.required">Hãy chọn giảng viên thực hiện</i>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="Reset()"> Làm mới</button>
+          <button type="submit" class="btn btn-success">Lưu lại</button>
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+        </form>
+     </div>
+  </div>
+</div>
+

@@ -1,0 +1,69 @@
+<div class="sidebar sidebar-style-2">
+  <div class="sidebar-wrapper scrollbar scrollbar-inner">
+    <div class="sidebar-content">
+      <div class="user">
+        <div class="avatar-sm float-left mr-2">
+          <img [src]="profile.hinhAnh" alt="" class="avatar-img rounded-circle" >
+        </div>
+        <div class="info">
+          <a data-toggle="collapse" routerLink="#collapseExample" aria-expanded="true">
+            <span>
+              {{profile.tenGV}}
+              <span class="user-level">{{profile.chucVu}}</span>
+              <span class="caret"></span>
+            </span>
+          </a>
+          <div class="clearfix"></div>
+
+          <div class="collapse in" id="collapseExample">
+            <ul class="nav">
+              <li>
+                <a routerLink="#profile">
+                  <span class="link-collapse">Thông Tin</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="#edit">
+                  <span class="link-collapse">Chỉnh Sửa</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="#settings">
+                  <span class="link-collapse">Đổi Mật Khẩu</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <ul class="nav nav-primary">
+        <ng-container *ngFor="let mn of menus">
+          <li class="nav-item" *ngIf="mn.dsCon == null" [routerLinkActive]="['active']">
+            <a data-toggle="collapse" routerLink="/{{mn.url}}" class="collapsed" aria-expanded="false">
+              <i class="fas {{mn.icon}}"></i>
+              <p>{{mn.ten}}</p>
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="mn.dsCon != null" [routerLinkActive]="['active']">
+            <a data-toggle="collapse" href="#{{mn.url}}">
+              <i class="fas {{mn.icon}}"></i>
+              <p>{{mn.ten}}</p>
+              <span class="caret"></span>
+            </a>
+            <div class="collapse" id="{{mn.url}}">
+              <ul class="nav nav-collapse">
+                <ng-container *ngFor="let m of mn.dsCon">
+                  <li [routerLinkActive]="['active']">
+                    <a routerLink="/{{m.url}}">
+                      <span class="sub-item">{{m.ten}}</span>
+                    </a>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</div>

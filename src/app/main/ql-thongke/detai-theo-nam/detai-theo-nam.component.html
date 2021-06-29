@@ -1,0 +1,64 @@
+<div class="page-inner">
+  <div class="page-header">
+     <h4 class="page-title">Thống Kê</h4>
+     <ul class="breadcrumbs">
+        <li class="nav-home">
+           <a href="#">
+           <i class="flaticon-home"></i>
+           </a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Giảng Viên</a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Danh Sách Giảng Viên</a>
+        </li>
+     </ul>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+        <div class="card">
+           <div class="card-header">
+              <div class="card-title">
+                Thống Kê Đề Tài
+              </div>
+           </div>
+           <div class="card-body ">
+            <div class="row">
+              <div class="form-group">
+                <form class="form-horizontal" role="form" [formGroup]="formtk" (ngSubmit)="tk_nam()">
+                  <div class="col-12">
+                  <div class=" form-floating-label ">
+                    <select class="form-control input-solid" id="selectFloatingLabel2" formControlName="trangthai" required="">
+                      <option value="" ></option>
+                      <option value="1" >Đã Hoàn Thành</option>
+                      <option value="0">Chưa Hoàn Thành</option>
+                    </select>
+                    <label for="selectFloatingLabel2" class="placeholder">Trạng Thái</label>
+                  </div>
+                  </div>
+                  <div class="col-12">
+                  <div class="form-group form-floating-label ">
+                    <input id="inputFloatingLabel2" type="text" class="form-control input-solid" formControlName="nam" required="">
+                    <label for="inputFloatingLabel2" class="placeholder">Năm Thực Hiện</label>
+                  </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-default" (click)="tk_nam()">
+                      <span class="btn-label"><i class="fa fa-archive"></i></span>Thống Kê
+                    </button>
+                  </div>
+                </form>
+              </div>
+              </div>
+            </div>
+        </div>
+     </div>
+  </div>
+</div>

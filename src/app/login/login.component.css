@@ -1,0 +1,167 @@
+html {
+    height: 100%;
+}
+
+/*LOGIN*/
+
+.login-page {
+    background-color: #a1ada3;
+    background-size: cover;
+    height: 100%;
+}
+
+strong {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-page .table-view {
+    height: 100%;
+    display: table;
+    width: 100%;
+}
+
+.login-page .table-view .container-fluid {
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.login-section {
+    min-height: 100px;
+    border-radius: 8px;
+    /* background: url('../../assets/img/login1.jpg') no-repeat; */
+    background-size: cover;
+    background-position: -50px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.5);
+}
+.login-section .checkbox input[type=checkbox] {
+    width: unset;
+    height: unset;
+}
+.login-section {
+    background-color: white;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding-top: 40px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.login-section .form-section form {
+    padding: 0 80px;
+}
+
+.login-section  {
+    min-height: 100px;
+}
+
+.login-section  form .form-group {
+    position: relative;
+}
+
+.login-section  form .form-group .fa {
+    position: absolute;
+    left: 25px;
+    top: 20px;
+    font-size: 16px;
+    color: #686868;
+    z-index: 2;
+}
+
+.login-section  form .form-group .form-control {
+    padding: 10px 10px 10px 50px !important;
+    border-radius: 20px;
+    background-color: #E6E6E6;
+    box-shadow: none;
+    border: none;
+    height: 32px;
+}
+
+/*btn- đăng nhập*/
+.btn-warning {
+  background-color: #F5A623;
+}
+.btn-warning:hover {
+    background-color: #28905b ;
+    border-color: #28905b ;
+}
+.btn-full{ width: 100%; }
+
+/* check box */
+.login-section .custom-checkbox .checkmark {
+    top: 1px;
+}
+
+.custom-checkbox
+ {
+    position: relative;
+    padding-left: 25px;
+    /* padding-right: 20px; */
+    margin-bottom: 10px;
+    font-weight: normal;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #000;
+    vertical-align: initial;
+}
+.custom-checkbox input {
+    display: none;
+}
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1px solid #51aab2;
+}
+.custom-checkbox:hover input ~ .checkmark {
+    background-color: #E6E6E6;
+}
+
+.custom-checkbox .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox { font-size: 12px; color: #9F9F9F; }
+
+.checkbox a {
+    text-decoration: none;
+    color: #9F9F9F;
+}
+.checkbox  a:hover {
+    color: #51aab2;
+    text-decoration: underline;
+}
+.custom-checkbox .checkmark:after {
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #51aab2;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/*margin, padding*/
+.mg-b-5 { margin-bottom: 5px; }
+.mg-b-10 { margin-bottom: 10px; }
+.mg-b-20 { margin-bottom: 20px; }
+.mg-b-35 { margin-bottom: 35px; }
+.mg-t-20 { margin-top: 20px; }
+.p-r-0 { padding-right: 0 !important; }
+.no-padding { padding: 0 !important; }

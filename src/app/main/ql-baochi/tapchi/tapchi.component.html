@@ -1,0 +1,232 @@
+<div class="page-inner">
+  <div class="page-header">
+     <h4 class="page-title">Quản Lý Tạp Chí</h4>
+     <ul class="breadcrumbs">
+        <li class="nav-home">
+           <a href="#">
+           <i class="flaticon-home"></i>
+           </a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Tạp Chí</a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Danh Sách Tạp Chí</a>
+        </li>
+     </ul>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+        <div class="card">
+           <div class="card-header">
+              <div class="card-title">
+                 Danh Sách Báo Chí
+                 <div class="them">
+                    <button class="btn btn-success" (click)="createModal()">
+                    <span class="btn-label">
+                    <i class="fa fa-plus"></i>
+                    </span> Thêm Mới
+                    </button>
+                 </div>
+              </div>
+           </div>
+           <div class="card-body ">
+             <form class="form-horizontal" role="form" [formGroup]="formsearch"  (ngSubmit)="search()">
+               <div class="row">
+                 <div class="col-lg-2">
+                  <div class="form-group form-group-default">
+                    <label>Số Dòng</label>
+                    <select class="form-control" #myselect (change)="updateValue(myselect.value)">
+                      <option value="3" >3</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                    </select>
+                  </div>
+                 </div>
+                 <div class="col-md-6 ml-auto">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input formControlName="ten" type="text" class="form-control" placeholder="Tìm kiếm " aria-label="" aria-describedby="basic-addon1">
+                      <div class="input-group-prepend">
+                        <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+               </div>
+              </form>
+              <p-table selectionMode="single" [value]="tapchis" styleClass="p-datatable-gridlines" [rowsPerPageOptions]="[10,25,50]">
+                 <ng-template pTemplate="header">
+                    <tr>
+                       <th style="width: 70px; text-align: center;">STT</th>
+                       <th style="width: 20%; text-align: left;">Tên Tạp Chí</th>
+                       <th style="width: 20%; text-align: left;">Loại Tạp Chí</th>
+                       <th style="width: 10%; text-align: left;">Quốc Gia</th>
+                       <th style="width: 120px; text-align: left;">Tác Vụ</th>
+                    </tr>
+                 </ng-template>
+                 <ng-template pTemplate="body" let-item  let-i="rowIndex" >
+                  <tr>
+                       <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                       <td>{{ item.ten_TapChi }}</td>
+                       <td>{{ item.ten_Loai }}</td>
+                       <td>{{ item.quocGia }}</td>
+                       <td>
+                        <button (click)="chitiet(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-success" data-original-title="Xem Thông Tin">
+                          <i class="fa fa-eye"></i>
+                        </button>
+                        <button (click)="openUpdateModal(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-warning" data-original-title="Chỉnh sửa">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button (click)="onDelete(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-danger" data-original-title="Xóa">
+                          <i class="fa fa-times"></i>
+                        </button>
+                      </td>
+                    </tr>
+                 </ng-template>
+              </p-table>
+           </div>
+           <div class="card-body">
+              <div class="demo" >
+                 <ul class="pagination pg-primary phantrang">
+                    <ngb-pagination
+                    [collectionSize]="totalRecords"
+                    [pageSize]="pageSize"
+                    [(page)]="page" [maxSize]="10"
+                    [rotate]="true"
+                    (pageChange)="loadPage($event)">
+                    </ngb-pagination>
+                 </ul>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- Modal -->
+<div *ngIf="showUpdateModal" id="createModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4  *ngIf="isCreate" class="modal-title">THÊM TẠP CHÍ</h4>
+          <h4 *ngIf="!isCreate" class="modal-title">SỬA TẠP CHÍ</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Tên Tạp Chí (
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="text" class=" form-control" placeholder="Tên Tạp Chí" formControlName="ten_TapChi"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.ten_TapChi.errors">
+                  <i style="color: red;" *ngIf="f.ten_TapChi.errors.required">Hãy nhập thông tin tên tạp chí</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Loại Tạp Chí (
+                  <span style="color: red;">*</span>)
+                </label>
+                <select formControlName="iD_Loai" class="form-control form-control" id="defaultSelect">
+                  <option value="">Chọn loại tạp chí</option>
+                  <option *ngFor="let x of loaitc" [value]="x.iD_LoaiTC">{{x.ten_Loai}}</option>
+                </select>
+                <small class="form-text text-muted" *ngIf="submitted && f.iD_Loai.errors">
+                  <i style="color: red;" *ngIf="f.iD_Loai.errors.required">Hãy chọn thông tin loại tạp chí</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Đơn Vị(
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="number" class=" form-control" placeholder="Nhập đơn vị của tạp chí" formControlName="donVi"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.donVi.errors">
+                  <i style="color: red;" *ngIf="f.donVi.errors.required">Hãy nhập thông tin đơn vị</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Quốc Gia (
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="number" class=" form-control" placeholder="Nhập quốc gia" formControlName="quocGia"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.quocGia.errors">
+                  <i style="color: red;" *ngIf="f.quocGia.errors.required">Hãy nhập thông tin quốc gia</i>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="Reset()"> Làm mới</button>
+          <button type="submit" class="btn btn-success">Lưu lại</button>
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+        </form>
+     </div>
+  </div>
+</div>
+<!-- Modal chi tiết -->
+<div *ngIf="showCTModal" id="profileModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">THÔNG TIN TẠP CHÍ</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-md-12" >
+              <p></p>
+              <h4>* Tên Tạp Chí: <b>{{tapchi.ten_TapChi}} </b></h4><br/>
+              <h4>* Đơn Vị: <b>{{tapchi.donVi}} </b></h4><br/>
+              <h4>* Quốc Gia: <b>{{tapchi.quocGia}} </b></h4><br/>
+              <h4>* Danh Sách Các Bài Báo:</h4><br/>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên Bài Báo</th>
+                    <th scope="col">Trang</th>
+                    <th scope="col">Xuất Bản</th>
+                    <th scope="col">Thực Hiện</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of bbao let i = index" >
+                    <td>{{i+1}}</td>
+                    <td>{{x.ten_BBao}}</td>
+                    <td>{{x.trang_BD}}</td>
+                    <td>{{x.tG_XB|date:'d/M/yyyy'}}</td>
+                    <td>{{x.hoTen}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+     </div>
+  </div>
+</div>
+

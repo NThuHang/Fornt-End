@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="vn">
+<head>
+  <meta charset="utf-8">
+  <title>Quản Lý Dữ Liệu Khoa Học</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Fonts and icons -->
+	<script src="assets/js/plugin/webfont/webfont.min.js"></script>
+	<script>
+		WebFont.load({
+			google: {"families":["Lato:300,400,700,900"]},
+			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['assets/css/fonts.min.css']},
+			active: function() {
+				sessionStorage.fonts = true;
+			}
+		});
+	</script>
+
+	<!-- CSS Files -->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/atlantis.min.css">
+
+	<!-- CSS Just for demo purpose, don't include it in your project -->
+  <link rel="stylesheet" href="assets/css/demo.css">
+
+  <script src="assets/js/core/jquery.3.2.1.min.js"></script>
+	<script src="assets/js/core/popper.min.js"></script>
+	<script src="assets/js/core/bootstrap.min.js"></script>
+
+	<!-- jQuery UI -->
+	<script src="assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- jQuery Scrollbar -->
+	<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+	<!-- Bootstrap Notify -->
+	<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+	<!-- Atlantis JS -->
+  <script src="assets/js/atlantis.min.js"></script>
+  <!-- Modal JS -->
+  <script>
+		//== Class definition
+		var SweetAlert2Demo = function() {
+
+			//== Demos
+			var initDemos = function() {
+
+				$('#alert_demo_3_3').click(function(e) {
+					swal("Good job!", "You clicked the button!", {
+						icon : "success",
+						buttons: {
+							confirm: {
+								className : 'btn btn-success'
+							}
+						},
+					});
+				});
+
+				$('#alert_demo_7').click(function(e) {
+					swal({
+						title: 'Are you sure?',
+						text: "You won't be able to revert this!",
+						type: 'warning',
+						buttons:{
+							confirm: {
+								text : 'Yes, delete it!',
+								className : 'btn btn-success'
+							},
+							cancel: {
+								visible: true,
+								className: 'btn btn-danger'
+							}
+						}
+					}).then((Delete) => {
+						if (Delete) {
+							swal({
+								title: 'Deleted!',
+								text: 'Your file has been deleted.',
+								type: 'success',
+								buttons : {
+									confirm: {
+										className : 'btn btn-success'
+									}
+								}
+							});
+						} else {
+							swal.close();
+						}
+					});
+				})
+
+			};
+
+			return {
+				//== Init
+				init: function() {
+					initDemos();
+				},
+			};
+		}();
+
+		//== Class Initialization
+		jQuery(document).ready(function() {
+			SweetAlert2Demo.init();
+		});
+  </script>
+  <script>
+    function showPassword(){
+      var x = document.getElementById("Password");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  </script>
+</head>
+<body class="login-page" cz-shortcut-listen="true">
+  <app-root></app-root>
+</body>
+</html>
