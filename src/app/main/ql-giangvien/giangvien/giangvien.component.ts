@@ -2,6 +2,7 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { FormBuilder,FormControl, Validators} from '@angular/forms';
 import { BaseComponent } from '../../../lib/base-component';
+import {MessageService} from 'primeng/api';
 import 'rxjs/add/operator/takeUntil';
 
 declare var $: any;
@@ -32,7 +33,7 @@ export class GiangvienComponent extends BaseComponent implements OnInit {
   pages: any;
 
   @ViewChild(FileUpload, { static: false }) file_image: FileUpload;
-  constructor(private fb: FormBuilder, injector: Injector) {
+  constructor(private fb: FormBuilder, injector: Injector, private messageService: MessageService) {
     super(injector);
   }
   ngOnInit(): void {
@@ -108,10 +109,10 @@ export class GiangvienComponent extends BaseComponent implements OnInit {
           ChucDanh:value.chucDanh
           };
         this._api.post('/api/giangviens/create-gv',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+          this.messageService.add({severity:'success', summary: 'Success', detail:'Thêm thành công'});
           alert('Thêm thành công');
           this.search();
           this.closeModal();
-
           });
       });
     } else {
@@ -153,7 +154,7 @@ export class GiangvienComponent extends BaseComponent implements OnInit {
           };
         }
         this._api.post('/api/giangviens/update-gv',tmp).takeUntil(this.unsubscribe).subscribe(res => {
-          alert('Cập nhật thành công!');
+          this.messageService.add({severity:'success', summary: 'Success', detail:'Xóa thành công'});
           this.search();
           this.closeModal();
           });

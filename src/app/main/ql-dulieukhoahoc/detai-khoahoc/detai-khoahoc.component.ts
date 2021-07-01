@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators} from '@angular/forms';
 import { BaseComponent } from '../../../lib/base-component';
+import { SelectItem } from 'primeng/api';
 import 'rxjs/add/operator/takeUntil';
 declare var $: any;
 
@@ -13,12 +14,12 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
   public detais: any ;
   public detai: any;
   public sohuuDT: any ;
-  public sohuuDTs: any;
+  loadvt: SelectItem[];
   public giangvienDT: any;
+  public dsgv: any;
   public totalRecords:any;
   public pageSize = 3;
   public page = 1;
-  public uploadedFiles: any[] = [];
   public formsearch: any;
   public formdata: any;
   public doneSetupForm: any;
@@ -33,6 +34,7 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     super(injector);
   }
   ngOnInit(): void {
+    this.showDeTaiGV = false;
     this.thongtin();
     this.formsearch = this.fb.group({
       'ten': [''],
@@ -62,6 +64,19 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
       });
   }
 
+  lay_ds_giangvien(){
+    this._api.get('/api/giangviens/get-all').subscribe(res=>{
+      this.dsgv = res;
+      // for (let i = 0; i <= this.dsgv.length; i++) {
+      //   this.loadgv.push({ label: this.dsgv[i].tenGV, value: this.dsgv[i].id});
+      // }
+    });
+    // this.loadvt =[
+    //   {label: 'Chủ trì', value: 'Chủ trì'},
+    //   {label: 'Thành viên', value: 'Thành viên'}
+    // ]
+  }
+
   public chitiet(row) {
     this.showDeTaiGV=true;
     setTimeout(() => {
@@ -77,36 +92,37 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
 
   get f() { return this.formdata.controls; }
 
+
   onSubmit(value) {
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
     }
-    if(this.isUpdateGV) {
+    if(this.isUpdateGV=false) {
       let tmp = {
         Id_GiangVien:value.id_GiangVien,
         ViTri:value.viTri,
         Id:this.detai.id
         };
-      this._api.post('/api/detais/create-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+      this._api.post('/api/detais/create-gv-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
         alert('Thêm vị trí giảng viên thành công');
         this.chitiet(this.detai.id);
         this.closeModal();
         });
     }
-    if(!this.isUpdateGV) {
+    else if(this.isUpdateGV=true) {
       let tmp = {
         Id_GiangVien:value.id_GiangVien,
         ViTri:value.viTri,
         Id:this.detai.id
         };
-      this._api.post('/api/detais/create-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+      this._api.post('/api/detais/update-gv-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
         alert('Chỉnh sửa vị trí giảng viên thành công');
         this.chitiet(this.detai.id);
         this.closeModal();
         });
     }
-    if(this.isCreate) {
+    else if(this.isCreate) {
         let tmp = {
           LoaiDT:value.loaiDT,
           TenDT:value.tenDT,
@@ -209,6 +225,7 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
   }
 
   createViTriGVModal() {
+    this.lay_ds_giangvien();
     this.doneSetupForm = false;
     this.showUpdateVTModal = true;
     this.isUpdateGV = false;
@@ -223,13 +240,14 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     });
   }
 
-  UpdateViTriGVModal(row){
+  updateViTriGVModal(row){
+    this.lay_ds_giangvien();
     this.doneSetupForm = false;
     this.showUpdateVTModal = true;
     this.isUpdateGV = true;
     setTimeout(() => {
       $('#updateModal').modal('toggle');
-      this._api.post('/api/detais/get-by-vitri/',{idDT: row.id, idGV : row.id_GiangVien}).takeUntil(this.unsubscribe).subscribe((res:any) => {
+      this._api.post('/api/detais/get-by-vitri/',{idDT: this.detai.id, idGV : row.id_GiangVien}).takeUntil(this.unsubscribe).subscribe((res:any) => {
         this.sohuuDT = res;
           this.formdata = this.fb.group({
             'id_GiangVien': [this.sohuuDT.id_GiangVien, Validators.required],
@@ -244,6 +262,9 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     $('#createModal').closest('.modal').modal('hide');
     $('#viewModal').closest('.modal').modal('hide');
     $('#updateModal').closest('.modal').modal('hide');
+  }
+  Quaylai(){
+    this.showDeTaiGV=false;
   }
 }
 

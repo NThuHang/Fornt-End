@@ -2,8 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {InputTextModule} from 'primeng/inputtext';
 import {TableModule} from 'primeng/table';
-import {PanelModule} from 'primeng/panel';
+import {ToastModule} from 'primeng/toast';
 import {CalendarModule} from 'primeng/calendar';
+import {SliderModule} from 'primeng/slider';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {DialogModule} from 'primeng/dialog';
+import {ButtonModule} from 'primeng/button';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {PanelModule} from 'primeng/panel';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {DropdownModule} from 'primeng/dropdown';
 import {FileUploadModule} from 'primeng/fileupload';
@@ -23,7 +30,14 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     DropdownModule,
     FileUploadModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    ToastModule,
+    SliderModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    DialogModule,
+    ButtonModule,
+    ProgressBarModule
   ],
   exports: [
     ReactiveFormsModule,
