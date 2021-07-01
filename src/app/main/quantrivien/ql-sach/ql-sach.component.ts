@@ -14,18 +14,18 @@ export class QlSachComponent extends BaseComponent implements OnInit {
   public sachs: any ;
   public sach: any;
   public giangvien: any;
+  public giangviens: any;
   public totalRecords:any;
-  public pageSize :any;
+  public pageSize :5;
   public page = 1;
-  public uploadedFiles: any[] = [];
+  public idGV : any;
   public formsearch: any;
   public formdata: any;
   public doneSetupForm: any;
-  public showUpdateModal:any;
-  public isCreate:any;
   public showCTModal:any;
   submitted = false;
   pages:any;
+  id_gv: any;
 
   constructor(private fb: FormBuilder, injector: Injector) {
     super(injector);
@@ -37,20 +37,18 @@ export class QlSachComponent extends BaseComponent implements OnInit {
     this.search();
   }
 
-  updateValue(value: any){
-    this.pages = value;
-    console.log(this.pages);
+  lay_ds_giangvien(){
+    this._api.get('/api/giangviens/giangvien-co-sach').subscribe(res=>{
+      this.giangvien = res;
+    })
+  }
+
+  dataChanged(value: any){
+    this.id_gv = value;
     this.search();
   }
 
   loadPage(page) {
-
-    if(this.pages != null){
-      this.pageSize = this.pages;
-    }
-    else{
-      this.pageSize = 3;
-    }
     this._api.post('/api/sachs/search',{page: page, pageSize: this.pageSize}).takeUntil(this.unsubscribe).subscribe(res => {
       this.sachs = res.data;
       this.totalRecords =  res.totalItems;
@@ -59,14 +57,17 @@ export class QlSachComponent extends BaseComponent implements OnInit {
   }
 
   search() {
+    this.lay_ds_giangvien();
     this.page = 1;
-    if(this.pages != null){
-      this.pageSize = this.pages;
+    this.pageSize =5;
+    if(this.id_gv != null ){
+      this.idGV = this.id_gv;
     }
     else{
-      this.pageSize = 3;
+      this.idGV ='';
     }
-    this._api.post('/api/sachs/search',{page: this.page, pageSize: this.pageSize, ten: this.formsearch.get('ten').value}).takeUntil(this.unsubscribe).subscribe(res => {
+    this._api.post('/api/sachs/search',{page: this.page, pageSize: this.pageSize, idGV: this.idGV,
+      ten: this.formsearch.get('ten').value}).takeUntil(this.unsubscribe).subscribe(res => {
       this.sachs = res.data;
       this.totalRecords =  res.totalItems;
       this.pageSize = res.pageSize;
@@ -80,89 +81,14 @@ export class QlSachComponent extends BaseComponent implements OnInit {
       this._api.get('/api/sachs/get-by-id/'+ row.id).subscribe(res=> {
         this.sach= res;
         });
-      this._api.get('/api/giangviens/getsach/'+ row.id).subscribe(res=>{
-        this.giangvien = res;
+      this._api.get('/api/sachs/get-by-gv/'+ row.id).subscribe(res=>{
+        this.giangviens = res;
       })
     });
-  }
-  get f() { return this.formdata.controls; }
-
-  onSubmit(value) {
-    this.submitted = true;
-    if (this.formdata.invalid) {
-      return;
-    }
-    if(this.isCreate) {
-        let tmp = {
-          Tensach:value.tensach,
-          };
-        this._api.post('/api/sachs/create-sach',tmp).takeUntil(this.unsubscribe).subscribe(res => {
-          alert('Thêm sach thành công');
-          this.search();
-          this.closeModal();
-          });
-    } else {
-        let tmp = {
-          Tensach:value.tensach,
-          Id:this.sach.id
-        };
-        this._api.post('/api/sachs/update-sach',tmp).takeUntil(this.unsubscribe).subscribe(res => {
-          alert('Cập nhật thành công');
-          this.search();
-          this.closeModal();
-          });
-    }
-
-  }
-
-  onDelete(row) {
-    this._api.post('/api/sachs/delete-sach',{bc_id:row.id}).takeUntil(this.unsubscribe).subscribe(res => {
-      alert('Xóa thành công');
-      this.search();
-      });
-  }
-
-  Reset() {
-    this.sach = null;
-    this.formdata = this.fb.group({
-      'tensach': ['', Validators.required]
-    } );
-  }
-
-  createModal() {
-    this.doneSetupForm = false;
-    this.showUpdateModal = true;
-    this.isCreate = true;
-    this.sach = null;
-    setTimeout(() => {
-      $('#createModal').modal('toggle');
-      this.formdata = this.fb.group({
-        'tensach': ['', Validators.required]
-      });
-      this.doneSetupForm = true;
-    });
-  }
-
-  public openUpdateModal(row) {
-    this.doneSetupForm = false;
-    this.showUpdateModal = true;
-    this.isCreate = false;
-    setTimeout(() => {
-      $('#createModal').modal('toggle');
-      this._api.get('/api/sachs/get-by-id/'+ row.id).takeUntil(this.unsubscribe).subscribe((res:any) => {
-        this.sach = res;
-        console.log(res);
-          this.formdata = this.fb.group({
-            'tensach': [this.sach.tensach, Validators.required]
-          });
-          this.doneSetupForm = true;
-        });
-    }, 700);
   }
 
   closeModal() {
     $('#createModal').closest('.modal').modal('hide');
-    $('#viewModal').closest('.modal').modal('hide');
   }
 }
 

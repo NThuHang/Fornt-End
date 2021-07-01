@@ -88,7 +88,7 @@
                           <i class="fa fa-edit"></i>
                         </button>
                         <button (click)="onDelete(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-danger" data-original-title="Xóa">
-                          <i class="fa fa-times"></i>
+                          <i class="fa fa-trash-alt"></i>
                         </button>
                       </td>
                     </tr>
@@ -112,7 +112,7 @@
      </div>
   </div>
 </div>
-<!-- Modal -->
+<!-- Modal Upload dữ liệu-->
 <div *ngIf="showUpdateModal" id="createModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg full-height-modal ">
      <div class="modal-content">
@@ -216,3 +216,160 @@
   </div>
 </div>
 
+<!-- Modal chi tiết -->
+<div *ngIf="showDeTaiGV" id="viewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">THÔNG TIN CHI TIẾT ĐỀ TÀI</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-md-12" >
+              <p></p>
+              <h4>* Tên đề tài: <b>{{detai.tenDT}} </b></h4><br/>
+              <h4>* Mã số đề tài: <b>{{detai.maSo}} </b></h4><br/>
+              <h4>* Cấp quản lý đề tài: <b>{{detai.capQuanLy}} </b></h4><br/>
+              <h4>* Thời gian(Bắt đầu - Kết thúc): <b>{{detai.thoiGianBD | date: 'yyyy'}} - {{detai.thoiGianKT | date: 'yyyy'}}  </b></h4><br/>
+              <h4>* Tình trạng đề tài: <b>{{detai.thanhTich}} </b></h4><br/>
+              <h4>* Danh sách giảng viên tham gia</h4><br/>
+
+              <!-- Sửa -->
+              <p-table [value]="sohuuDT" dataKey="id" editMode="row">
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th style="width:8rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                    <tr [pEditableRow]="item">
+
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="item.tenGV" required>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{item.tenGV}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td pEditableColumn>
+                          <p-cellEditor>
+                              <ng-template pTemplate="input">
+                                  <input pInputText type="text" [(ngModel)]="item.viTri" required>
+                              </ng-template>
+                              <ng-template pTemplate="output">
+                                  {{item.viTri}}
+                              </ng-template>
+                          </p-cellEditor>
+                      </td>
+                        <!-- <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <p-dropdown [options]="statuses" [(ngModel)]="product.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{product.inventoryStatus}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td> -->
+                        <td style="text-align:center">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                    (click)="onRowEditInit(item)" class="p-button-rounded p-button-text"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                    (click)="onRowEditSave(item)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                    (click)="onRowEditCancel(item, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+              <!-- <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên giảng viên </th>
+                    <th scope="col">Nhiệm vụ</th>
+                    <th scope="col">Chỉnh sửa</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of giangvienDT let i = index" >
+                    <td>{{i+1}}</td>
+                    <td>{{x.tenGV}}</td>
+                    <td>{{x.viTri}}</td>
+                    <button (click)="UpdateViTriGVModal(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-warning" data-original-title="Chỉnh sửa">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                  </tr>
+                </tbody>
+              </table> -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+     </div>
+  </div>
+</div>
+
+<!-- Modal Upload giảng tham gia-->
+<div *ngIf="showUpdateVTModal" id="updateModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4  *ngIf="isCreate" class="modal-title">THÊM GIẢNG VIÊN THAM GIA ĐỂ TÀI</h4>
+          <h4 *ngIf="!isCreate" class="modal-title">SỬA GIẢNG VIÊN THAM GIA ĐỂ TÀI</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-8">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Tên giảng viên (
+                  <span style="color: red;">*</span>)
+                </label>
+                <input type="text" class=" form-control" placeholder="Nhập tên bộ môn" formControlName="id_GiangVien"/>
+                <small class="form-text text-muted" *ngIf="submitted && f.id_GiangVienerrors">
+                  <i style="color: red;" *ngIf="f.id_GiangVienerrors.required">Hãy nhập tên bộ môn</i>
+                </small>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label class="control-label no-padding-right"> Vị Trí (
+                  <span style="color: red;">*</span>)
+                </label>
+                <select formControlName="viTri" class="form-control form-control" id="defaultSelect">
+                  <option value="">---Chọn vị trí---</option>
+                  <option value="Chủ trì">Chủ trì</option>
+                  <option value="Thành viên">Thành Viên</option>
+                </select>
+                <small class="form-text text-muted" *ngIf="submitted && f.viTri.errors">
+                  <i style="color: red;" *ngIf="f.viTri.errors.required">Hãy chọn vị trí tham gia</i>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Lưu lại</button>
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+        </form>
+     </div>
+  </div>
+</div>

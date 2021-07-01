@@ -1,1 +1,150 @@
-<p>ql-hoinghi works!</p>
+<div class="page-inner">
+  <div class="page-header">
+     <h4 class="page-title">Quản Lý Đề Tài Khoa Học</h4>
+     <ul class="breadcrumbs">
+        <li class="nav-home">
+           <a href="#">
+           <i class="flaticon-home"></i>
+           </a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Đề Tài Khoa Học</a>
+        </li>
+        <li class="separator">
+           <i class="flaticon-right-arrow"></i>
+        </li>
+        <li class="nav-item">
+           <a href="#">Danh Sách Đề Tài</a>
+        </li>
+     </ul>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+        <div class="card">
+           <div class="card-header">
+              <div class="card-title">
+                 Danh Sách Đề Tài
+              </div>
+           </div>
+           <div class="card-body ">
+
+               <div class="row">
+                <div class="col-lg-2">
+                  <div class="form-group form-group-default">
+                    <label>Giảng viên</label>
+                    <select class="form-control" [(ngModel)]="id_gv" (ngModelChange)="dataChanged($event)" name="id_gv">
+                      <option value="" >Tất cả</option>
+                      <option *ngFor="let x of giangvien" [ngValue]="x.id">{{x.tenGV}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6 ml-auto">
+                  <form class="form-horizontal" role="form" [formGroup]="formsearch"  (ngSubmit)="search()">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input formControlName="ten" type="text" class="form-control" placeholder="Tìm kiếm " aria-label="" aria-describedby="basic-addon1">
+                        <div class="input-group-prepend">
+                          <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+               </div>
+              <p-table selectionMode="single" [value]="hoinghis" styleClass="p-datatable-gridlines">
+                 <ng-template pTemplate="header">
+                    <tr>
+                       <th style="width: 70px; text-align: center;">STT</th>
+                       <th style="text-align: center;">Tên đề tài</th>
+                       <th style="width:200px;text-align: center;">Giảng viên</th>
+                       <th style="width:120px;text-align: center;">Vị trí</th>
+                       <th style="width:120px; text-align: center;">Trạng thái</th>
+                       <th style="width:80px; text-align: center;">Tác vụ</th>
+                    </tr>
+                 </ng-template>
+                 <ng-template pTemplate="body" let-item  let-i="rowIndex">
+                    <tr>
+                        <td style="text-align: center;">{{ i + 1 }}</td>
+                        <td>{{ item.tenDT }}</td>
+                        <td>{{ item.tenGV }}</td>
+                        <td style="text-align: center;">{{ item.viTri }}</td>
+                        <td style="text-align: center;">{{ item.thanhTich}}</td>
+                        <td  style="text-align: center;">
+                          <button (click)="chitiet(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-success" data-original-title="Xem Thông Tin">
+                            <i class="fa fa-eye"></i>
+                          </button>
+                        </td>
+                    </tr>
+                 </ng-template>
+              </p-table>
+           </div>
+           <div class="card-body">
+              <div class="demo" >
+                 <ul class="pagination pg-primary phantrang">
+                    <ngb-pagination
+                    [collectionSize]="totalRecords"
+                    [pageSize]="pageSize"
+                    [(page)]="page" [maxSize]="10"
+                    [rotate]="true"
+                    (pageChange)="loadPage($event)">
+                    </ngb-pagination>
+                 </ul>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- Modal chi tiết -->
+<div *ngIf="showCTModal" id="viewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg full-height-modal ">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">THÔNG TIN CHI TIẾT ĐỀ TÀI</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body no-padding">
+          <div class="row">
+            <div class="col-md-12" >
+              <p></p>
+              <h4>* Tên đề tài: <b>{{detai.tenDT}} </b></h4><br/>
+              <h4>* Mã số đề tài: <b>{{detai.maSo}} </b></h4><br/>
+              <h4>* Cấp quản lý đề tài: <b>{{detai.capQuanLy}} </b></h4><br/>
+              <h4>* Thời gian(Bắt đầu - Kết thúc): <b>{{detai.thoiGianBD | date: 'yyyy'}} - {{detai.thoiGianKT | date: 'yyyy'}}  </b></h4><br/>
+              <h4>* Tình trạng đề tài: <b>{{detai.thanhTich}} </b></h4><br/>
+              <h4>* Danh sách giảng viên tham gia</h4><br/>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên giảng viên </th>
+                    <th scope="col">Nhiệm vụ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of giangviens let i = index" >
+                    <td>{{i+1}}</td>
+                    <td>{{x.tenGV}}</td>
+                    <td>{{x.viTri}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="closeModal()"> Đóng lại</button>
+        </div>
+     </div>
+  </div>
+</div>
+
+
+
+
+

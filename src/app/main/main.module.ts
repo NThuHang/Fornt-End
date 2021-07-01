@@ -33,13 +33,16 @@ export const mainRoutes: Routes = [
         path: 'quantri',
         loadChildren: () =>
           import('./quantrivien/quantrivien.module').then((m) => m.QuantrivienModule),
+          // canActivate: [RoleGuard],
+          // data: { roles: [Role.Admin] },
 
       },
       {
         path: 'nguoidung',
         loadChildren: () =>
           import('./nguoidung-giangvien/nguoidung-giangvien.module').then((m) => m.NguoidungGiangvienModule),
-
+          // canActivate: [RoleGuard],
+          // data: { roles: [Role.GiangVien] },
       },
       {
         path: 'qlgiangvien',

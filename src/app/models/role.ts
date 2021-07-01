@@ -1,4 +1,4 @@
 export enum Role {
-    User = 'User',
+    GiangVien = 'Giảng Viên',
     Admin = 'Admin'
 }

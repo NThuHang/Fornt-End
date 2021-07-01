@@ -16,14 +16,12 @@ export class QlDetaiComponent extends BaseComponent implements OnInit {
   public giangvien: any;
   public giangviens: any;
   public totalRecords:any;
-  public pageSize =10;
+  public pageSize =5;
   public page = 1;
   public idGV : any;
   public formsearch: any;
   public formdata: any;
   public doneSetupForm: any;
-  public showUpdateModal:any;
-  public isCreate:any;
   public showCTModal:any;
   submitted = false;
   id_gv: any;
@@ -61,7 +59,7 @@ export class QlDetaiComponent extends BaseComponent implements OnInit {
   search() {
     this.lay_ds_giangvien();
     this.page = 1;
-    this.pageSize =10;
+    this.pageSize =5;
     if(this.id_gv != null ){
       this.idGV = this.id_gv;
     }

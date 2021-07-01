@@ -17,19 +17,19 @@ export class HomeComponent extends BaseComponent implements OnInit {
     super(injector);
   }
   ngOnInit(): void {
-
+    this.laytt();
   }
   laytt(){
-    this._api.get('/api/giangvien/tongsl').subscribe(res=> {
+    this._api.get('/api/giangviens/tongsl').subscribe(res=> {
       this.sl_gv = res;
     });
-    this._api.get('/api/DeTaiNCKH/tongsl').subscribe(res=> {
-      this.sl_detai = res;
-    });
-    this._api.get('/api/sach/tongsl').subscribe(res=> {
-      this.sl_sach= res;
-    });
-    this._api.get('/api/baochi/tongsl').subscribe(res=> {
+    // this._api.get('/api/detais/tongsl').subscribe(res=> {
+    //   this.sl_detai = res;
+    // });
+    // this._api.get('/api/sachs/tongsl').subscribe(res=> {
+    //   this.sl_sach= res;
+    // });
+    this._api.get('/api/baochis/tongsl').subscribe(res=> {
       this.sl_bao = res;
     });
   }

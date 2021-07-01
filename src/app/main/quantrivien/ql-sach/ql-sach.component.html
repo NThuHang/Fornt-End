@@ -1,6 +1,6 @@
 <div class="page-inner">
   <div class="page-header">
-     <h4 class="page-title">Quản Lý Đề Tài Khoa Học</h4>
+     <h4 class="page-title">Quản Lý Sách</h4>
      <ul class="breadcrumbs">
         <li class="nav-home">
            <a href="#">
@@ -11,13 +11,13 @@
            <i class="flaticon-right-arrow"></i>
         </li>
         <li class="nav-item">
-           <a href="#">Đề Tài Khoa Học</a>
+           <a href="#">Sách</a>
         </li>
         <li class="separator">
            <i class="flaticon-right-arrow"></i>
         </li>
         <li class="nav-item">
-           <a href="#">Danh Sách Đề Tài</a>
+           <a href="#">Danh Sách Các Quyển Sách</a>
         </li>
      </ul>
   </div>
@@ -26,58 +26,50 @@
         <div class="card">
            <div class="card-header">
               <div class="card-title">
-                 Danh Sách Đề Tài
-                 <div class="them">
-                    <button class="btn btn-success" (click)="createModal()">
-                    <span class="btn-label">
-                    <i class="fa fa-plus"></i>
-                    </span> Thêm Mới
-                    </button>
-                 </div>
+                 Danh Sách Các Quyển Sách
               </div>
            </div>
            <div class="card-body ">
-             <form class="form-horizontal" role="form" [formGroup]="formsearch"  (ngSubmit)="search()">
+
                <div class="row">
-                 <div class="col-lg-2">
+                <div class="col-lg-2">
                   <div class="form-group form-group-default">
                     <label>Giảng viên</label>
-                    <select class="form-control" #myselect (change)="updateValue(myselect.value)">
-                      <option value="3" >3</option>
-                      <option value="5">5</option>
-                      <option value="10">10</option>
-                      <option value="20">20</option>
+                    <select class="form-control" [(ngModel)]="id_gv" (ngModelChange)="dataChanged($event)" name="id_gv">
+                      <option value="" >Tất cả</option>
+                      <option *ngFor="let x of giangvien" [ngValue]="x.id">{{x.tenGV}}</option>
                     </select>
                   </div>
-                 </div>
-                 <div class="col-md-6 ml-auto">
-                  <div class="form-group">
-                    <div class="input-group">
-                      <input formControlName="ten" type="text" class="form-control" placeholder="Tìm kiếm " aria-label="" aria-describedby="basic-addon1">
-                      <div class="input-group-prepend">
-                        <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                </div>
+                <div class="col-md-6 ml-auto">
+                  <form class="form-horizontal" role="form" [formGroup]="formsearch"  (ngSubmit)="search()">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input formControlName="ten" type="text" class="form-control" placeholder="Tìm kiếm " aria-label="" aria-describedby="basic-addon1">
+                        <div class="input-group-prepend">
+                          <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                 </div>
+                  </form>
+                </div>
                </div>
-              </form>
               <p-table selectionMode="single" [value]="sachs" styleClass="p-datatable-gridlines">
                  <ng-template pTemplate="header">
                     <tr>
                        <th style="width: 70px; text-align: center;">STT</th>
-                       <th style="width: 100px;text-align: center;">Tên đề tài</th>
-                       <th style="text-align: center;">Cơ quan quản lý</th>
-                       <th style="text-align: center;">Trạng thái</th>
-                       <th style="width:180px; text-align: center;">Tác vụ</th>
+                       <th style="text-align: center;">Tên sách</th>
+                       <th style="width:200px;text-align: center;">Nơi xuất bản</th>
+                       <th style="width:120px;text-align: center;">Năm xuất bản</th>
+                       <th style="width:80px; text-align: center;">Tác vụ</th>
                     </tr>
                  </ng-template>
                  <ng-template pTemplate="body" let-item  let-i="rowIndex">
                     <tr>
                         <td style="text-align: center;">{{ i + 1 }}</td>
-                        <td>{{ item.tenDT }}</td>
-                        <td>{{ item.capQuanLy }}</td>
-                        <td>{{ item.thanhTich}}</td>
+                        <td>{{ item.tenSach }}</td>
+                        <td>{{ item.noiXB }}</td>
+                        <td style="text-align: center;">{{ item.namXB }}</td>
                         <td  style="text-align: center;">
                           <button (click)="chitiet(item)" data-toggle="tooltip" class="btn btn-icon btn-link btn-success" data-original-title="Xem Thông Tin">
                             <i class="fa fa-eye"></i>
@@ -109,7 +101,7 @@
   <div class="modal-dialog modal-lg full-height-modal ">
      <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">THÔNG TIN DANH SÁCH QUYỂN SÁCH</h4>
+          <h4 class="modal-title">THÔNG TIN CHI TIẾT VỀ SÁCH</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -118,20 +110,25 @@
           <div class="row">
             <div class="col-md-12" >
               <p></p>
-              <h4>* Tên sách: <b>{{khoa.tenKhoa}} </b></h4><br/>
+              <h4>* Tên sách: <b>{{sach.tenSach}} </b></h4><br/>
+              <h4>* Loại sách: <b>{{sach.loaiSach}} </b></h4><br/>
+              <h4>* Nơi xuất bản: <b>{{sach.noiXB}} </b></h4><br/>
+              <h4>* Năm xuất bản: <b>{{sach.namXB}}</b></h4><br/>
+              <h4>* ISBN: <b>{{sach.iSBN}} </b></h4><br/>
+              <h4>* Danh sách giảng viên tham gia</h4><br/>
               <table class="table table-bordered">
                 <thead>
                   <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Tên giảng viên </th>
-                    <th scope="col">Chức vụ</th>
+                    <th scope="col">Nhiệm vụ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let x of giangvien let i = index" >
+                  <tr *ngFor="let x of giangviens let i = index" >
                     <td>{{i+1}}</td>
-                    <td>{{x.id}}</td>
-                    <td>{{x.tenBM}}</td>
+                    <td>{{x.tenGV}}</td>
+                    <td>{{x.viTri}}</td>
                   </tr>
                 </tbody>
               </table>

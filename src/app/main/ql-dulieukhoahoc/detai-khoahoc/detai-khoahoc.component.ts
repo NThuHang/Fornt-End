@@ -12,7 +12,9 @@ declare var $: any;
 export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
   public detais: any ;
   public detai: any;
-  public tapchi: any;
+  public sohuuDT: any ;
+  public sohuuDTs: any;
+  public giangvienDT: any;
   public totalRecords:any;
   public pageSize = 3;
   public page = 1;
@@ -21,7 +23,10 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
   public formdata: any;
   public doneSetupForm: any;
   public showUpdateModal:any;
+  public showUpdateVTModal:any;
+  public showDeTaiGV: any;
   public isCreate:any;
+  public isUpdateGV: any;
   submitted = false;
   gv: any;
   constructor(private fb: FormBuilder, injector: Injector) {
@@ -57,6 +62,18 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
       });
   }
 
+  public chitiet(row) {
+    this.showDeTaiGV=true;
+    setTimeout(() => {
+      $('#viewModal').modal('toggle');
+      this._api.get('/api/detais/get-by-id/'+ row.id).subscribe(res=> {
+        this.detai= res;
+      });
+      this._api.get('/api/detais/get-by-gv/'+ row.id).subscribe(res=>{
+        this.giangvienDT = res;
+      });
+    });
+  }
 
   get f() { return this.formdata.controls; }
 
@@ -64,6 +81,30 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     this.submitted = true;
     if (this.formdata.invalid) {
       return;
+    }
+    if(this.isUpdateGV) {
+      let tmp = {
+        Id_GiangVien:value.id_GiangVien,
+        ViTri:value.viTri,
+        Id:this.detai.id
+        };
+      this._api.post('/api/detais/create-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        alert('Thêm vị trí giảng viên thành công');
+        this.chitiet(this.detai.id);
+        this.closeModal();
+        });
+    }
+    if(!this.isUpdateGV) {
+      let tmp = {
+        Id_GiangVien:value.id_GiangVien,
+        ViTri:value.viTri,
+        Id:this.detai.id
+        };
+      this._api.post('/api/detais/create-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        alert('Chỉnh sửa vị trí giảng viên thành công');
+        this.chitiet(this.detai.id);
+        this.closeModal();
+        });
     }
     if(this.isCreate) {
         let tmp = {
@@ -76,11 +117,12 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
           ThanhTich: value.thanhTich
           };
         this._api.post('/api/detais/create-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
-          alert('Thêm thành công');
+          alert('Thêm đề tài thành công');
           this.search();
           this.closeModal();
           });
-    } else {
+    }
+    else {
         let tmp = {
           LoaiDT:value.loaiDT,
           TenDT:value.tenDT,
@@ -166,8 +208,42 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     }, 700);
   }
 
+  createViTriGVModal() {
+    this.doneSetupForm = false;
+    this.showUpdateVTModal = true;
+    this.isUpdateGV = false;
+    this.sohuuDT = null;
+    setTimeout(() => {
+      $('#updateModal').modal('toggle');
+      this.formdata = this.fb.group({
+        'id_GiangVien': ['', Validators.required],
+        'viTri': ['', Validators.required]
+      });
+      this.doneSetupForm = true;
+    });
+  }
+
+  UpdateViTriGVModal(row){
+    this.doneSetupForm = false;
+    this.showUpdateVTModal = true;
+    this.isUpdateGV = true;
+    setTimeout(() => {
+      $('#updateModal').modal('toggle');
+      this._api.post('/api/detais/get-by-vitri/',{idDT: row.id, idGV : row.id_GiangVien}).takeUntil(this.unsubscribe).subscribe((res:any) => {
+        this.sohuuDT = res;
+          this.formdata = this.fb.group({
+            'id_GiangVien': [this.sohuuDT.id_GiangVien, Validators.required],
+            'viTri': [this.sohuuDT.viTri, Validators.required]
+          })
+          this.doneSetupForm = true;
+        });
+    }, 700);
+  }
+
   closeModal() {
     $('#createModal').closest('.modal').modal('hide');
+    $('#viewModal').closest('.modal').modal('hide');
+    $('#updateModal').closest('.modal').modal('hide');
   }
 }
 
