@@ -100,7 +100,7 @@ export class QlDaotaoComponent  extends BaseComponent implements OnInit {
           NoiDT:value.noiDT,
           ChuyenMon:value.chuyenMon,
           NamTotNghiep:value.namTotNghiep ,
-          id_GiangVien:this.gv.id,
+          Id_GiangVien:this.gv.id,
           };
         this._api.post('/api/daotaos/create-daotao',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Thêm thành công');
@@ -126,7 +126,7 @@ export class QlDaotaoComponent  extends BaseComponent implements OnInit {
 
 
   onDelete(row) {
-    this._api.post('/api/daotaos/delete-daotao',{dt_id:row.id}).takeUntil(this.unsubscribe).subscribe(res => {
+    this._api.post('/api/daotaos/delete-daotao',{Id:row.id}).takeUntil(this.unsubscribe).subscribe(res => {
       alert('Xóa thành công');
       this.search();
       });

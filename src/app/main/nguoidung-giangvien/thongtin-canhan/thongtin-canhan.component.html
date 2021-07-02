@@ -1,0 +1,181 @@
+<div class="page-inner">
+  <div class="page-header">
+    <h4 class="page-title">THÔNG TIN CÁ NHÂN</h4>
+    <ul class="breadcrumbs">
+      <li class="nav-home">
+        <a href="#">
+          <i class="flaticon-home"></i>
+        </a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">Thông tin</a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">Chỉnh sửa thông tin cá nhân</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">THÔNG TIN CÁ NHÂN</div>
+        </div>
+        <form *ngIf="doneSetupForm" [formGroup]="formdata"  (ngSubmit)="onSubmit(formdata.value)" class="form-horizontal utehy-form">
+          <div class="modal-body no-padding">
+            <div class="row">
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Họ tên (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <input type="text" class=" form-control" placeholder="Họ tên" formControlName="tenGV"/>
+                  <small class="form-text text-muted" *ngIf="submitted && f.tenGV.errors">
+                    <i style="color: red;" *ngIf="f.tenGV.errors.required">Hãy nhập thông tin họ tên</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Giới tính (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <p-dropdown [options]="genders" formControlName="gioiTinh" [style]="{'width':'100%'}"></p-dropdown>
+                  <small class="form-text text-muted" *ngIf="submitted && f.gioiTinh.errors">
+                    <i style="color: red;" *ngIf="f.gioiTinh.errors.required">Hãy chọn giới tính</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Ngày sinh (<span style="color: red;">*</span>)</label><br>
+                  <p-calendar formControlName="ngaySinh" [dateFormat]="dateFormat"  [locale]="locale_vn" [showIcon]="false" inputId="icon"></p-calendar>
+                  <small class="form-text text-muted" *ngIf="submitted && f.ngaySinh.errors">
+                    <i style="color: red;" *ngIf="f.ngaySinh.errors.required">Hãy nhập ngày sinh</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Số điện thoại (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <input type="tel" class=" form-control" placeholder="Số điện thoại" formControlName="sdt"/>
+                  <small class="form-text text-muted" *ngIf="submitted && f.sdt.errors&&!formdata.get('sdt').valid">
+                    <i style="color: red;" *ngIf="f.sdt.errors.required">Hãy nhập thông tin số điện thoại</i>
+                    <i style="color: red;" *ngIf="f.sdt.errors.pattern">Số điện thoại sai</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Email (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <input type="email" class=" form-control" placeholder="Email" formControlName="email"/>
+                  <small class="form-text text-muted" *ngIf="submitted && f.email.errors">
+                    <i style="color: red;" *ngIf="f.email.errors.required">Hãy nhập email của giảng viên</i>
+                    <i style="color: red;" *ngIf="f.email.errors.email">Email nhập không đúng định dạng</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right">Tin Học </label>
+                  <input type="text" class=" form-control" placeholder="Chứng chỉ tin học" formControlName="tinHoc"/>
+                  <small class="form-text text-muted" *ngIf="submitted && f.tinHoc.errors">
+                    <i style="color: red;" *ngIf="f.tinHoc.errors.required">Hãy nhập thông tin chứng chỉ tin học</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Chức Danh (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <select formControlName="chucDanh" class="form-control form-control" id="defaultSelect">
+                    <option value="">---Chọn chức danh---</option>
+                    <option value="Thạc sĩ">Thạc sĩ</option>
+                    <option value="Tiến sĩ">Tiến sĩ</option>
+                    <option value="Phó giáo sư">Phó giáo sư</option>
+                    <option value="Giáo sư">Giáo sư</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="submitted && f.chucDanh.errors">
+                    <i style="color: red;" *ngIf="f.chucDanh.errors.required">Hãy nhập chức danh của giảng viên</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Bộ Môn (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <select formControlName="id_BoMon" class="form-control form-control" id="defaultSelect">
+                    <option value="">---Chọn bộ môn---</option>
+                    <option *ngFor="let x of bomon" [value]="x.id">{{x.tenBM}}</option>
+                  </select>
+                  <small class="form-text text-muted" *ngIf="submitted && f.id_BoMon.errors">
+                    <i style="color: red;" *ngIf="f.id_BoMon.errors.required">Hãy chọn bộ môn</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Chức Vụ (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <input type="text" class=" form-control" placeholder="Chức vụ" formControlName="chucVu"/>
+                  <small class="form-text text-muted" *ngIf="submitted && f.chucVu.errors">
+                    <i style="color: red;" *ngIf="f.chucVu.errors.required">Hãy nhập chức vụ của giảng viên</i>
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Địa chỉ (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <input type="text" class=" form-control" placeholder="Địa chỉ" formControlName="diaChi"/>
+                  <small class="form-text text-muted" *ngIf="submitted && f.diaChi.errors">
+                    <i style="color: red;" *ngIf="f.diaChi.errors.required">Hãy nhập thông tin địa chỉ</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Nơi sinh: (
+                    <span style="color: red;">*</span>)
+                  </label>
+                  <input type="text" class=" form-control" placeholder="Nơi sinh" formControlName="noiSinh"/>
+                  <small class="form-text text-muted" *ngIf="submitted && f.noiSinh.errors">
+                    <i style="color: red;" *ngIf="f.noiSinh.errors.required">Hãy nhập thông tin nơi sinh</i>
+                  </small>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="control-label no-padding-right"> Hình Ảnh </label>
+                  <p-fileUpload #file_image mode="advanced" [showUploadButton]="false" cancelLabel="Hủy" chooseLabel ="Chọn ảnh"   multiple="false" accept="image/*" maxFileSize="1000000">
+                  <ng-template pTemplate="content" >
+                      <img  *ngIf="giangvien && giangvien.hinhAnh" style="height: 100px;width: 100px;" [src]="giangvien.hinhAnh">
+                  </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" >Lưu lại</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

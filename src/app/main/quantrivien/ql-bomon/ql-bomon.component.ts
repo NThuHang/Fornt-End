@@ -111,7 +111,7 @@ export class QlBomonComponent  extends BaseComponent implements OnInit {
   }
 
   onDelete(row) {
-    this._api.post('/api/bomons/delete-BoMon',{bc_id:row.id}).takeUntil(this.unsubscribe).subscribe(res => {
+    this._api.post('/api/bomons/delete-BoMon',{Id:row.id}).takeUntil(this.unsubscribe).subscribe(res => {
       alert('Xóa thành công');
       this.search();
       });

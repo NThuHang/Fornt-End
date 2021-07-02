@@ -28,7 +28,9 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
   public showDeTaiGV: any;
   public isCreate:any;
   public isUpdateGV: any;
+  public status : any;
   submitted = false;
+  submittedVT = false;
   gv: any;
   constructor(private fb: FormBuilder, injector: Injector) {
     super(injector);
@@ -77,6 +79,12 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     // ]
   }
 
+  public dsgv_thamgia(){
+    this._api.get('/api/detais/get-by-gv/'+ this.detai.id).subscribe(res=>{
+      this.giangvienDT = res;
+    });
+  }
+
   public chitiet(row) {
     this.showDeTaiGV=true;
     setTimeout(() => {
@@ -98,39 +106,18 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     if (this.formdata.invalid) {
       return;
     }
-    if(this.isUpdateGV=false) {
-      let tmp = {
-        Id_GiangVien:value.id_GiangVien,
-        ViTri:value.viTri,
-        Id:this.detai.id
-        };
-      this._api.post('/api/detais/create-gv-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
-        alert('Thêm vị trí giảng viên thành công');
-        this.chitiet(this.detai.id);
-        this.closeModal();
-        });
-    }
-    else if(this.isUpdateGV=true) {
-      let tmp = {
-        Id_GiangVien:value.id_GiangVien,
-        ViTri:value.viTri,
-        Id:this.detai.id
-        };
-      this._api.post('/api/detais/update-gv-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
-        alert('Chỉnh sửa vị trí giảng viên thành công');
-        this.chitiet(this.detai.id);
-        this.closeModal();
-        });
-    }
-    else if(this.isCreate) {
+    if(this.isCreate) {
+      this.status = false;
         let tmp = {
           LoaiDT:value.loaiDT,
           TenDT:value.tenDT,
           MaSo:value.maSo,
           CoQuanQuanLy : value.coQuanQuanLy,
           CapQuanLy : value.capQuanLy,
-          ThoiGianBD: value.thoiGianBD ,
-          ThanhTich: value.thanhTich
+          ThoiGianBD: value.thoiGianBD,
+          ThoiGianKT: value.thoiGianKT,
+          ThanhTich: value.thanhTich,
+          Status: this.status
           };
         this._api.post('/api/detais/create-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
           alert('Thêm đề tài thành công');
@@ -145,7 +132,8 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
           MaSo:value.maSo,
           CoQuanQuanLy : value.coQuanQuanLy,
           CapQuanLy : value.capQuanLy,
-          ThoiGianBD: value.thoiGianBD ,
+          ThoiGianBD: value.thoiGianBD,
+          ThoiGianKT: value.thoiGianKT,
           ThanhTich: value.thanhTich ,
           Id:this.detai.id
         };
@@ -157,10 +145,47 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
     }
 
   }
+  SubmitVT(value) {
+    this.submittedVT = true;
+    if (this.formdata.invalid) {
+      return;
+    }
+    if(!this.isUpdateGV) {
+      let tmp = {
+        Id_GiangVien:value.id_GiangVien,
+        ViTri:value.viTri,
+        Id_DeTai:this.detai.id
+        };
+      this._api.post('/api/detais/create-gv-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        alert('Thêm vị trí giảng viên thành công');
+        this.dsgv_thamgia();
+        this.closeModal();
+        });
+    }
+    else {
+      let tmp = {
+        Id_GiangVien:value.id_GiangVien,
+        ViTri:value.viTri,
+        Id_DeTai:this.detai.id
+        };
+      this._api.post('/api/detais/update-gv-detai',tmp).takeUntil(this.unsubscribe).subscribe(res => {
+        alert('Chỉnh sửa vị trí giảng viên thành công');
+        this.dsgv_thamgia();
+        this.closeModal();
+        });
+    }
+  }
   onDelete(row) {
     this._api.post('/api/detais/delete-detai',{id:row.id}).takeUntil(this.unsubscribe).subscribe(res => {
       alert('Xóa thành công');
       this.search();
+      });
+  }
+
+  onDeleteVT(row) {
+    this._api.post('/api/detais/delete-gv-detai',{idDT: this.detai.id, idGV : row.id_GiangVien}).takeUntil(this.unsubscribe).subscribe(res => {
+      alert('Xóa giảng viên tham gia thành công');
+      this.dsgv_thamgia();
       });
   }
 
@@ -251,6 +276,7 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
         this.sohuuDT = res;
           this.formdata = this.fb.group({
             'id_GiangVien': [this.sohuuDT.id_GiangVien, Validators.required],
+            'tenGV': [this.sohuuDT.tenGV, Validators.required],
             'viTri': [this.sohuuDT.viTri, Validators.required]
           })
           this.doneSetupForm = true;
@@ -260,7 +286,6 @@ export class DetaiKhoahocComponent  extends BaseComponent implements OnInit {
 
   closeModal() {
     $('#createModal').closest('.modal').modal('hide');
-    $('#viewModal').closest('.modal').modal('hide');
     $('#updateModal').closest('.modal').modal('hide');
   }
   Quaylai(){
